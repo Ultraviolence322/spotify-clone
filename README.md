@@ -1,6 +1,6 @@
 ## Database structure
 
-![alt text](https://github.com/Ultraviolence322/spotify-clone/db-structure.png)
+![alt text](https://github.com/Ultraviolence322/spotify-clone/db-structure.jpg)
 
 ## Installation
 
