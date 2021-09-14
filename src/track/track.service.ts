@@ -12,6 +12,13 @@ export class TrackService {
     @InjectModel(Comment.name) private commentModel: Model<CommentDocument>
   ) {}
   
+  async create(dto: CreateTrackDto): Promise<Track> {
+    
+    const track = await this.trackModel.create({
+      ...dto,
+      listens: 0,
+    })
+    return track
   }
 
   async getAll() {
@@ -23,6 +30,6 @@ export class TrackService {
   }
 
   async delete() {
-    
+
   }
 }
