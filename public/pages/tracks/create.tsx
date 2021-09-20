@@ -3,6 +3,7 @@ import React, { ReactElement, useState } from 'react'
 import FileUpload from '../../components/FileUpload'
 import MainLayout from '../../components/MainLayout'
 import StepWrapper from '../../components/StepWrapper'
+import { useInput } from '../../hooks/useInput'
 
 interface Props {
   
@@ -12,9 +13,40 @@ export default function CreateTrackPage({}: Props): ReactElement {
   const [step, setStep] = useState(0)
   const [image, setImage] = useState(null)
   const [audio, setAudio] = useState(null)
+  const name = useInput('')
+  const author = useInput('')
+  const desc = useInput('')
 
-  const next = () => {
-    setStep(stepCurrenct => stepCurrenct + 1)
+  const next = async () => {
+    if (step != 2) {
+      setStep(stepCurrenct => stepCurrenct + 1)
+    } else {
+      const formData = new FormData()
+      formData.append('picture', image)
+      formData.append('audio', audio)
+      formData.append('name', name.value)
+      formData.append('artist', author.value)
+      formData.append('text', desc.value)
+      console.log('image', image);
+      console.log('audio', audio);
+      console.log('name', name.value);
+      console.log('author', author.value);
+      console.log('desc', desc.value);
+      console.log('formData', formData);
+
+      try {
+        const response = await fetch('http://localhost:5000/tracks', {
+          method: 'POST', // *GET, POST, PUT, DELETE, etc.
+          body: formData // body data type must match "Content-Type" header
+        })
+        const data = await response.json()
+        console.log('response', response);
+        console.log('data', data);
+      } catch (error) {
+        console.log('erroe', error);
+        
+      }
+    }
   }
 
   const back = () => {
@@ -26,9 +58,9 @@ export default function CreateTrackPage({}: Props): ReactElement {
       <StepWrapper activeStep={step}>
         {
           step === 0 && <Grid>
-            <TextField label="name" />
-            <TextField label="author" />
-            <TextField label="desc" />
+            <TextField {...name} label="name" />
+            <TextField {...author} label="author" />
+            <TextField {...desc} label="desc" />
           </Grid>
         }
         {
