@@ -7,6 +7,11 @@ const rootReducer = combineReducers({
 })
 
 export const reducer = (state, action) => {
+  console.log('state', state);
+  console.log('action', action);
+  console.log('HYDRATE', HYDRATE);
+  console.log('rootReducer', rootReducer);
+  
   if (action.type === HYDRATE) {
     const nextState = {
       ...state, // use previous state
@@ -15,7 +20,7 @@ export const reducer = (state, action) => {
     if (state.count) nextState.count = state.count // preserve count value on client side navigation
     return nextState
   } else {
-    return rootReducer
+    return rootReducer(state, action)
   }
 }
 
