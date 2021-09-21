@@ -10,7 +10,6 @@ export default function FileUpload({children, accept, setFile}: Props): ReactEle
   const fileRef = useRef<HTMLInputElement>() 
 
   const changeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log('e', e);
     setFile(e.target.files[0])
   }
 

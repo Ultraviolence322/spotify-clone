@@ -27,12 +27,6 @@ export default function CreateTrackPage({}: Props): ReactElement {
       formData.append('name', name.value)
       formData.append('artist', author.value)
       formData.append('text', desc.value)
-      console.log('image', image);
-      console.log('audio', audio);
-      console.log('name', name.value);
-      console.log('author', author.value);
-      console.log('desc', desc.value);
-      console.log('formData', formData);
 
       try {
         const response = await fetch('http://localhost:5000/tracks', {
@@ -40,11 +34,8 @@ export default function CreateTrackPage({}: Props): ReactElement {
           body: formData // body data type must match "Content-Type" header
         })
         const data = await response.json()
-        console.log('response', response);
-        console.log('data', data);
       } catch (error) {
         console.log('erroe', error);
-        
       }
     }
   }
