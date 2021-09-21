@@ -1,4 +1,5 @@
 import { Button, Grid, TextField } from '@mui/material'
+import { useRouter } from 'next/dist/client/router'
 import React, { ReactElement, useState } from 'react'
 import FileUpload from '../../components/FileUpload'
 import MainLayout from '../../components/MainLayout'
@@ -17,6 +18,8 @@ export default function CreateTrackPage({}: Props): ReactElement {
   const author = useInput('')
   const desc = useInput('')
 
+  const router = useRouter()
+
   const next = async () => {
     if (step != 2) {
       setStep(stepCurrenct => stepCurrenct + 1)
@@ -34,6 +37,8 @@ export default function CreateTrackPage({}: Props): ReactElement {
           body: formData // body data type must match "Content-Type" header
         })
         const data = await response.json()
+        router.push('/tracks')
+        
       } catch (error) {
         console.log('erroe', error);
       }
