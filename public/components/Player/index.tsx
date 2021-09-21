@@ -35,39 +35,43 @@ export default function TrackLine(): ReactElement {
   }
 
   useEffect(() => {
-    audio = new Audio()
-    audio.src = 'http://localhost:5000/audio/cfa05a9b-1bc6-4c9b-8ea9-48d4876c0ae2.mp3'
-    audio.volume = volume / 100
-
-    audio.onloadedmetadata = () => setDurationTrack(audio.duration)
-    audio.ontimeupdate = () => setCurrentTimeTrack(audio.currentTime)
-  }, [])
+    if(active) {
+      audio = new Audio()
+      audio.src = 'http://localhost:5000/' + active.audio
+      audio.volume = volume / 100
+  
+      audio.onloadedmetadata = () => setDurationTrack(audio.duration)
+      audio.ontimeupdate = () => setCurrentTimeTrack(audio.currentTime)
+    }
+  }, [active])
 
   return (
-    <div className={styles.player}>
-      <IconButton onClick={play}>
-        {
-          pause 
-            ? <PlayArrow/>
-            : <Pause/>
-        }
-      </IconButton>
-      <img
-        src={''}
-        width={70}
-        alt="track" 
-      />
-      <div>
-        {'vlad\'s song'}
-      </div>
-      <div>
-        {'vl;af'}
-      </div>
-      <TrackProgress left={currentTime} right={duration} onChange={changeCurrentTime} />
-      <IconButton>
-        <VolumeUp />
-      </IconButton>
-      <TrackProgress left={volume} right={100} onChange={changeVolume} />
-    </div>
+    <>
+      {active && <div className={styles.player}>
+        <IconButton onClick={play}>
+          {
+            pause 
+              ? <PlayArrow/>
+              : <Pause/>
+          }
+        </IconButton>
+        <img
+          src={'http://localhost:5000/' + active.picture}
+          width={70}
+          alt="track" 
+        />
+        <div>
+          {active.name}
+        </div>
+        <div>
+          {active.artist}
+        </div>
+        <TrackProgress left={currentTime} right={duration} onChange={changeCurrentTime} />
+        <IconButton>
+          <VolumeUp />
+        </IconButton>
+        <TrackProgress left={volume} right={100} onChange={changeVolume} />
+      </div>}
+    </>
   )
 }
