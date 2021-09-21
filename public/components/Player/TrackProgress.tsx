@@ -3,7 +3,7 @@ import React, { ReactElement } from 'react'
 interface Props {
   left: number,
   right: number,
-  onChange: () => ({})
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 export default function TrackProgress({left, right, onChange}: Props): ReactElement {
@@ -11,11 +11,12 @@ export default function TrackProgress({left, right, onChange}: Props): ReactElem
     <div>
       <input 
         type="range"
-        min={left}
+        min={0}
         max={right}
         value={left}
         onChange={onChange}
       />
+      <div>{left} / {right}</div>
     </div>
   )
 }
