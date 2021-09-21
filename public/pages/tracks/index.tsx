@@ -2,50 +2,14 @@ import React, { ReactElement } from 'react'
 import { Button } from '@mui/material'
 import MainLayout from '../../components/MainLayout'
 import { useRouter } from 'next/dist/client/router'
-import { ITrack } from '../../interfaces'
 import TrackList from '../../components/TrackList'
+import { useTypedSelector } from '../../hooks/useTypeSelector'
+import { fetchTracks } from '../../store/action-creators/tracks'
+import { NextThunkDispatch, wrapper } from '../../store'
 
-interface Props {
-  
-}
-
-export default function TracksPage({}: Props): ReactElement {
+export default function TracksPage({}): ReactElement {
   const router = useRouter()
-
-  const tracks: Array<ITrack> = [
-    {
-      _id: '1',
-      artist: 'Artist 1',
-      audio: '',
-      comments: [
-        {
-          _id: '1',
-          username: 'Vlad',
-          text: 'nice song'
-        },
-      ],
-      listens: 0,
-      name: 'Track 1',
-      picture: 'http://localhost:5000/image/1.jpg',
-      text: 'Desc'
-    },
-    {
-      _id: '2',
-      artist: 'Artist 2',
-      audio: '',
-      comments: [
-        {
-          _id: '1',
-          username: 'Vlad 2',
-          text: 'nice song 2'
-        },
-      ],
-      listens: 0,
-      name: 'Track 2',
-      picture: 'http://localhost:5000/image/unnamed.jpg',
-      text: 'Desc 2'
-    }
-  ]
+  const {tracks} = useTypedSelector(state => state.tracks)
 
   return (
     <MainLayout>
@@ -55,3 +19,9 @@ export default function TracksPage({}: Props): ReactElement {
     </MainLayout>
   )
 }
+
+export const getServerSideProps = wrapper.getServerSideProps((store) => async () => {
+  const dispatch = store.dispatch as NextThunkDispatch
+  await dispatch(await fetchTracks())
+  return null
+})
