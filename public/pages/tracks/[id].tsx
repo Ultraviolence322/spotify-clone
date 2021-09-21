@@ -20,7 +20,7 @@ export default function TrackPage({}: Props): ReactElement {
     ],
     listens: 0,
     name: 'Track 1',
-    picture: 'http://localhost:5000/image/1.jpg',
+    picture: 'http://localhost:5000/image/105ae608-109b-4a4e-85fa-69ff956cd044.jpg',
     text: 'Desc'
   }
   return (
@@ -40,8 +40,8 @@ export default function TrackPage({}: Props): ReactElement {
       />
 
       <ul>
-        {track.comments.map(c => {
-          return <li>
+        {track.comments.map((c,idx) => {
+          return <li key={idx}>
             <h3>{c.username}</h3>
             <p>{c.text}</p>
           </li>
