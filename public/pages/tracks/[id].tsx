@@ -1,31 +1,19 @@
 import { TextField } from '@mui/material'
-import React, { ReactElement } from 'react'
+import { GetServerSideProps } from 'next'
+import React, { ReactElement, useState } from 'react'
 import MainLayout from '../../components/MainLayout'
+import { ITrack } from '../../interfaces'
 
 interface Props {
-  
+  serverTrack: ITrack
 }
 
-export default function TrackPage({}: Props): ReactElement {
-  const track = {
-    _id: '1',
-    artist: 'Artist 1',
-    audio: '',
-    comments: [
-      {
-        _id: '1',
-        username: 'Vlad',
-        text: 'nice song'
-      },
-    ],
-    listens: 0,
-    name: 'Track 1',
-    picture: 'http://localhost:5000/image/105ae608-109b-4a4e-85fa-69ff956cd044.jpg',
-    text: 'Desc'
-  }
+export default function TrackPage({serverTrack}: Props): ReactElement {
+  const [track, setTrack] = useState(serverTrack)
+
   return (
     <MainLayout>
-      <img src={track.picture} width="200" height="200" alt="picture" />
+      <img src={'http://localhost:5000/' + track.picture} width="200" height="200" alt="picture" />
       <h1>{track.name}</h1>
       <div>listens: {track.listens}</div>
       <div>desc: {track.text}</div>
@@ -50,3 +38,23 @@ export default function TrackPage({}: Props): ReactElement {
     </MainLayout>
   )
 }
+
+export const getServerSideProps: GetServerSideProps = async ({params}) => {
+  let data = null
+
+  try {
+    const response = await fetch('http://localhost:5000/tracks/' + params.id)
+    data = await response.json()
+  } catch (error) {
+    console.log('error', error);
+  }
+
+  console.log('data', data);
+  
+
+  return {
+    props: {
+      serverTrack: data
+    }
+  }
+} 
