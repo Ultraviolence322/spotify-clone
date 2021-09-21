@@ -2,28 +2,33 @@ import { Delete, Pause, PlayArrow } from '@mui/icons-material'
 import { Card, IconButton } from '@mui/material'
 import { useRouter } from 'next/dist/client/router'
 import React, { ReactElement } from 'react'
+import { useActions } from '../hooks/useActions'
 import { ITrack } from '../interfaces'
 
 interface Props {
-  track: ITrack,
-  isActive?: boolean
+  track: ITrack
 }
 
-export default function TrackItem({track, isActive = false}: Props): ReactElement {
+export default function TrackItem({track}: Props): ReactElement {
   const router = useRouter()
+  const {pauseTrack, setActiveTrack} = useActions()
   
+  const play = (e: React.MouseEvent<HTMLButtonElement>): void => {
+    e.stopPropagation()
+
+    pauseTrack()
+    setActiveTrack(track)
+  }
+
+
   return (
     <li onClick={() => router.push('/tracks/' + track._id)}>
       <Card>
-        <IconButton>
-          {
-            isActive 
-              ? <Pause/>
-              : <PlayArrow/>
-          }
+        <IconButton onClick={play}>
+          <PlayArrow/>
         </IconButton>
         <img
-          src={track.picture}
+          src={'http://localhost:5000/' + track.picture}
           width={70}
           alt="track" 
         />
@@ -33,7 +38,6 @@ export default function TrackItem({track, isActive = false}: Props): ReactElemen
         <div>
         {track.artist}
         </div>
-        {isActive && <div>0:42 / 4:21</div>}
         <IconButton>
           <Delete />
         </IconButton>
